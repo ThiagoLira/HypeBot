@@ -1,0 +1,5 @@
+beautifulsoup4==4.9.3
+requests
+lxml
+python-telegram-bot==13.2
+pytube==10.9.1
