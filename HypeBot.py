@@ -157,16 +157,36 @@ def get_trailer(update,context):
     
     update.message.reply_text(text=out)
 
+
+
+def dream(update, context):
+    # hardcode server IP for now
+    server_url = 'http://192.168.15.176:5000'
+    
+
+    if len(context.args)==0:
+        update.message.reply_text(text='Prompt não detectado!')
+        return 
+
+    prompt = " ".join(context.args)
+    print(f'Gerando imagem para prompt \'{prompt}\'') 
+    r = requests.get(server_url, params={'prompt':prompt}, timeout=30)
+    context.bot.send_photo(chat_id=update.effective_chat.id, photo=r.content)
+
+
+
 def main():
 
     # read key from file and create bot
     with open('key','r') as f:
         key = f.read()
+    key = "1635907666:AAGATPVBLLDVuoqDnBRtUeYI2TYjaDo5PGE"
     updater = Updater(key,use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('lastreleases',get_last_releases))
     dp.add_handler(CommandHandler('upcomingreleases',get_upcoming_releases))
     dp.add_handler(CommandHandler('get_trailer',get_trailer))
+    dp.add_handler(CommandHandler('dream',dream))
     updater.start_polling()
     updater.idle()
 
